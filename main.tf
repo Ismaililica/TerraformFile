@@ -119,9 +119,9 @@ resource "aws_default_security_group" "defaultsg" {
 
   ingress {
 
-    from_port = -1
-    to_port = -1
-    protocol = "icmp"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -150,18 +150,20 @@ resource "aws_instance" "EC2deneme" {
 
     Name = "TerraformPublicEC2"
   }
-
-} 
+  depends_on = [aws_subnet.publicsubnettf]
+}
 
 resource "aws_instance" "privatesubnetEC2" {
 
-  ami = "ami-0683ee28af6610487"
-  instance_type = "t3.micro"
-  subnet_id = aws_subnet.privatesubnettf.id
+  ami                    = "ami-0683ee28af6610487"
+  instance_type          = "t3.micro"
+  subnet_id              = aws_subnet.privatesubnettf.id
   vpc_security_group_ids = [aws_default_security_group.defaultsg.id]
 
-   tags = {
+  tags = {
 
     Name = "TerraformPrivateEC2"
   }
+
+  depends_on = [aws_subnet.privatesubnettf]
 }
